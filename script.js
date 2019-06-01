@@ -52,8 +52,8 @@ function start() {
           } else {
             console.log("Total Amount Due: $" + total);
             reduce(units, item);
-            report(total);
           }
+          report(total);
         }
       );
     });
@@ -108,6 +108,17 @@ function report(x) {
     [x],
     function(err, res) {
       if (err) throw err;
+    }
+  );
+  supervisor();
+}
+
+function supervisor() {
+  connection.query(
+    "select department_id, department_name, over_head_cost, product_sales, (product_sales - over_head_cost )AS total_profit from departments;",
+    function(err, res) {
+      if (err) throw err;
+      console.table(res);
     }
   );
 }
